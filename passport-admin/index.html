@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Passport认证中心</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="./static/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./static/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./static/admin-lte/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="./static/admin-lte/css/skins/skin-blue.min.css">
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+   <div id="app"></div>
+</body>
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="/static/plugins/html5shiv/html5shiv.min.js"></script>
+<script src="/static/plugins/respondjs/respond.js"></script>
+<![endif]-->
+
+<!-- jQuery 2.2.3 -->
+<script type="text/javascript" src="./static/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script type="text/javascript" src="./static/bootstrap/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script type="text/javascript" src="./static/admin-lte/js/app.min.js"></script>
+</html>
+
+<script>
+  $(document).ready(function () {
+    var pgurl = window.location.href;
+    console.log(pgurl);
+    // active：ul.sidebar-menu -> li -> a
+    $("ul.sidebar-menu>li>a").each(function () {
+      if ($(this).attr("href") != '#' && pgurl.indexOf($(this).attr("href").split("?")[0]) >= 0) {
+        $(this).parent().addClass("active");
+      }
+    });
+  });
+</script>
+
+<style type="text/css">
+    body {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box ;
+      position: relative;
+      background-image: url('./static/images/bg/3.jpg');
+      background-attachment:fixed;
+      background-repeat:repeat;
+      background-size:cover;
+      -o-background-size:cover;
+      -moz-background-size:cover;
+      -webkit-background-size:cover;
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
+</style>
+
+

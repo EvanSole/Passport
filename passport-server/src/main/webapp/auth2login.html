@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Passport统一认证中心登录</title>
+    <base href="${BASE_PATH}">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">-->
+    <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="/static/styles/login.css" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="/static/plugins/html5shiv/html5shiv.min.js"></script>
+    <script src="/static/plugins/respondjs/respond.js"></script>
+    <![endif]-->
+
+    <!-- jQuery 2.2.3 -->
+    <script src="/static/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <!-- AdminLTE App -->
+    <script type="text/javascript" src="/static/scripts/userlogin.js"></script>
+
+</head>
+
+<body>
+    <div class="login">
+        <!-- BEGIN LOGO -->
+        <div class="login login-title">
+            <span class="glyphicon glyphicon-globe ">&nbsp;Passport统一认证中心</span>
+        </div>
+        <!-- END LOGO -->
+        <!-- BEGIN LOGIN -->
+        <div class="login container login-container">
+            <!-- BEGIN LOGIN FORM -->
+            <form id="loginForm" class="login-form" method="post" action="/auth2/authorize">
+                <input type="hidden" id="client_id" name="client_id" value="477835478402478">
+                <input type="hidden" id="redirect_uri" name="redirect_uri" value="http://127.0.0.1:8085/index.html">
+                <input type="hidden" id="response_type" name="response_type" value="code">
+                <div class="form-title">
+                    <span class="form-title">Welcome.</span>
+                    <span class="form-subtitle">Please login.</span>
+                </div>
+                <!--message alert-->
+                <div class="login_info alert alert-danger" style="display:none;">
+                    <button class="close" data-close="alert"></button>
+                </div>
+                <div class="form-group">
+                    <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+                    <label class="control-label visible-ie8 visible-ie9">用户名</label>
+                    <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="请输入用户名" id="loginName" name="loginName" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label visible-ie8 visible-ie9">密码</label>
+                    <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="请输入密码" id="password" name="password"/>
+                </div>
+                <div class="form-group">
+                    <div id="login_validate" class="login_user clearfix" style="display:none;">
+                        <input class="" placeholder="验证码" type="text" id="validateCode"/>
+                        <img id="validatePic" src="../validate.jpg" style="width: 106px;"/>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn red btn-block uppercase" onclick="submitLogin()">登 录</button>
+                </div>
+            </form>
+            <!-- END LOGIN FORM -->
+        </div>
+        <!-- END LOGIN -->
+    </div>
+</body>
+
+</html>

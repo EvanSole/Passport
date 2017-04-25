@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+       default-lazy-init="true">
+
+    <description>Spring配置</description>
+
+    <!--方式一:加载环境属性文件context方式,通过SystemConfigUtil工具类获取value-->
+    <context:property-placeholder ignore-resource-not-found="true" location="classpath*:passportConfigs.properties"/>
+
+    <!--方式二:加载环境属性文件util方式，使用spring的@alue注解获取value; 使用示例: @Value(value = "#{passport['xxx']}")-->
+    <util:properties id="passportConfigs" location="classpath*:passportConfigs.properties"></util:properties>
+
+    <!-- 扫描注解Bean -->
+    <context:component-scan base-package="com.hmt.oauth.passport">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!-- 开启AOP监听 只对当前配置文件有效 -->
+    <aop:aspectj-autoproxy expose-proxy="true"/>
+
+    <import resource="spring-jdbc.xml"/>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceProxy" />
+    </bean>
+
+    <tx:advice id="coreTxAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="RuntimeException"/>
+            <tx:method name="create*" propagation="REQUIRED" rollback-for="RuntimeException"/>
+            <tx:method name="edit*" propagation="REQUIRED" rollback-for="RuntimeException"/>
+            <tx:method name="remove*" propagation="REQUIRED" rollback-for="RuntimeException"/>
+            <tx:method name="insert*" propagation="REQUIRED" rollback-for="RuntimeException"/>
+            <tx:method name="save*" propagation="REQUIRED" rollback-for="RuntimeException"/>
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="RuntimeException"/>
+            <tx:method name="modify*" propagation="REQUIRED" rollback-for="RuntimeException"/>
+            <tx:method name="change*" propagation="REQUIRED" rollback-for="RuntimeException"/>
+            <tx:method name="delete*" propagation="REQUIRED" rollback-for="RuntimeException"/>
+            <tx:method name="batch*" propagation="REQUIRED" rollback-for="RuntimeException"/>
+            <tx:method name="execute*" propagation="REQUIRED" rollback-for="RuntimeException"/>
+            <tx:method name="*" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config expose-proxy="true" proxy-target-class="true">
+        <aop:pointcut id="pointcut" expression="execution( * com.hmt.oauth.passport.service..*.*(..))"/>
+        <aop:advisor advice-ref="coreTxAdvice" pointcut-ref="pointcut"/>
+    </aop:config>
+
+</beans>

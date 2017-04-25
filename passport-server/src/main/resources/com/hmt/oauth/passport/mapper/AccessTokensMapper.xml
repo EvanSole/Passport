@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmt.oauth.passport.mapper.AccessTokensMapper">
+    <resultMap id="BaseResultMap" type="com.hmt.oauth.passport.entity.AccessTokensEntity">
+        <result column="login_name" jdbcType="VARCHAR" property="loginName"/>
+        <result column="access_token" jdbcType="VARCHAR" property="accessToken"/>
+        <result column="expire_time" jdbcType="BIGINT" property="expireTime"/>
+        <result column="timestamps" jdbcType="TIMESTAMP" property="timestamps"/>
+    </resultMap>
+
+    <resultMap id="RefreshTokensResultMap" type="com.hmt.oauth.passport.entity.RefreshTokensEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="access_token" jdbcType="VARCHAR" property="accessToken"/>
+        <result column="refresh_token" jdbcType="VARCHAR" property="refreshToken"/>
+        <result column="revoked" jdbcType="TINYINT" property="revoked"/>
+        <result column="expire_time" jdbcType="BIGINT" property="expireTime"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+      login_name, access_token, expire_time, timestamps
+    </sql>
+
+    <select id="getAccessToken" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        t_oauth_access_tokens where access_token = #{accessToken,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findLoginNameByAccessToken" parameterType="java.lang.String" resultType="java.lang.String">
+        select login_name from t_oauth_access_tokens where access_token = #{accessToken,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertAccessTokens" parameterType="com.hmt.oauth.passport.entity.AccessTokensEntity">
+     insert into t_oauth_access_tokens (login_name, access_token, expire_time)
+     values (#{loginName,jdbcType=VARCHAR}, #{accessToken,jdbcType=VARCHAR}, #{expireTime,jdbcType=BIGINT})
+  </insert>
+
+</mapper>

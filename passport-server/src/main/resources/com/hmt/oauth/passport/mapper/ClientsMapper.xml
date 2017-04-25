@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmt.oauth.passport.mapper.ClientsMapper">
+  <resultMap id="BaseResultMap" type="com.hmt.oauth.passport.entity.ClientsEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="app_key" jdbcType="VARCHAR" property="appKey" />
+    <result column="app_secret" jdbcType="VARCHAR" property="appSecret" />
+    <result column="redirect_uri" jdbcType="VARCHAR" property="redirectUri" />
+    <result column="auth_type" jdbcType="VARCHAR" property="authType" />
+    <result column="app_icon" jdbcType="VARCHAR" property="appIcon" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="owner" jdbcType="VARCHAR" property="owner" />
+    <result column="owner_email" jdbcType="VARCHAR" property="ownerEmail" />
+    <result column="owner_contact" jdbcType="VARCHAR" property="ownerContact" />
+    <result column="revoked" jdbcType="TINYINT" property="revoked" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+    <result column="timestamps" jdbcType="TIMESTAMP" property="timestamps" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, name, app_key, app_secret, redirect_uri, auth_type, app_icon, description, owner,
+    owner_email, owner_contact, revoked, create_user, create_time, update_user, update_time, 
+    timestamps
+  </sql>
+
+  <!--query Where  语句-->
+  <sql id="queryWhereClause">
+    <where>
+      <if test="id != null and id != 0">
+        AND id = #{id,jdbcType =BIGINT}
+      </if>
+      <if test="name != null and name != ''">
+        <bind name="name" value="'%' + name + '%'"/>
+        AND name LIKE #{name}
+      </if>
+      <if test="appSecret != null and appSecret != ''">
+        AND app_secret = #{appSecret,jdbcType = VARCHAR}
+      </if>
+      <if test="appKey != null and appKey != ''">
+        AND app_key = #{appKey,jdbcType = VARCHAR}
+      </if>
+    </where>
+  </sql>
+
+  <!--query limit 语句-->
+  <sql id="queryLimitClause">
+    <if test="offset != null and offset >= 0 and pageSize != null and pageSize > 0">
+      LIMIT ${offset}, ${pageSize}
+    </if>
+  </sql>
+
+  <!--query orderby 语句-->
+  <sql id="queryOrderByClause">
+    <if test="orderBy != null">
+      ORDER BY ${orderBy}
+    </if>
+    <if test="orderBy == null">
+      ORDER BY create_time desc
+    </if>
+  </sql>
+
+
+
+  <select id="selectByExample" parameterType="com.hmt.oauth.passport.entity.ClientsEntity" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_oauth_clients
+  </select>
+
+  <!--pages-->
+  <select id="selectClients" parameterType="com.hmt.oauth.passport.entity.ClientsEntity" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_oauth_clients
+    <include refid="queryWhereClause"/>
+    <include refid="queryOrderByClause"/>
+    <include refid="queryLimitClause"/>
+  </select>
+  <!--pageTotal-->
+  <select id="selectClientsTotal" parameterType="com.hmt.oauth.passport.entity.ClientsEntity" resultType="java.lang.Integer">
+    select count(1)
+    from t_oauth_clients
+    <include refid="queryWhereClause"/>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_oauth_clients
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="findByClientAppSecret" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_oauth_clients
+    where app_secret = #{appSecret,jdbcType=VARCHAR}
+  </select>
+
+  <select id="findByClientAppKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_oauth_clients
+    where app_key = #{appKey,jdbcType=VARCHAR}
+  </select>
+  <select id="findByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_oauth_clients
+    where name = #{name,jdbcType=VARCHAR}
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_oauth_clients
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+
+  <insert id="insertClients" parameterType="com.hmt.oauth.passport.entity.ClientsEntity">
+    insert into t_oauth_clients
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="appKey != null">
+        app_key,
+      </if>
+      <if test="appSecret != null">
+        app_secret,
+      </if>
+      <if test="redirectUri != null">
+        redirect_uri,
+      </if>
+      <if test="authType != null">
+        auth_type,
+      </if>
+      <if test="appIcon != null">
+        app_icon,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="owner != null">
+        owner,
+      </if>
+      <if test="ownerEmail != null">
+        owner_email,
+      </if>
+      <if test="ownerContact != null">
+        owner_contact,
+      </if>
+      <if test="revoked != null">
+        revoked,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="timestamps != null">
+        timestamps,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="appKey != null">
+        #{appKey,jdbcType=VARCHAR},
+      </if>
+      <if test="appSecret != null">
+        #{appSecret,jdbcType=VARCHAR},
+      </if>
+      <if test="redirectUri != null">
+        #{redirectUri,jdbcType=VARCHAR},
+      </if>
+      <if test="authType != null">
+        #{authType,jdbcType=VARCHAR},
+      </if>
+      <if test="appIcon != null">
+        #{appIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="owner != null">
+        #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerEmail != null">
+        #{ownerEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerContact != null">
+        #{ownerContact,jdbcType=VARCHAR},
+      </if>
+      <if test="revoked != null">
+        #{revoked,jdbcType=TINYINT},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="timestamps != null">
+        #{timestamps,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateClients" parameterType="com.hmt.oauth.passport.entity.ClientsEntity">
+    update t_oauth_clients
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="appKey != null">
+        app_key = #{appKey,jdbcType=VARCHAR},
+      </if>
+      <if test="appSecret != null">
+        app_secret = #{appSecret,jdbcType=VARCHAR},
+      </if>
+      <if test="redirectUri != null">
+        redirect_uri = #{redirectUri,jdbcType=VARCHAR},
+      </if>
+      <if test="authType != null">
+        auth_type = #{authType,jdbcType=VARCHAR},
+      </if>
+      <if test="appIcon != null">
+        app_icon = #{appIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="owner != null">
+        owner = #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerEmail != null">
+        owner_email = #{ownerEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerContact != null">
+        owner_contact = #{ownerContact,jdbcType=VARCHAR},
+      </if>
+      <if test="revoked != null">
+        revoked = #{revoked,jdbcType=TINYINT},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateUser != null">
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="findByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    c.name AS name,c.id AS id
+    from t_oauth_clients c
+    INNER JOIN t_oauth_clients_users u ON u.user_id = #{userId,jdbcType=INTEGER} AND c.id = u.client_id
+  </select>
+
+</mapper>
