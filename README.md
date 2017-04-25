@@ -36,7 +36,7 @@ passport-server.客户端只做集成使用，提供统一的filter(也可自行
 
 ### Passport项目部分功能展示
 
-* [Demo](http://edwin.xin/passport)  
+* [Demo](http://106.14.180.178//passport)  
 
 ##  Passport集成配置说明
 > 系统提供两种集成方案:
@@ -281,7 +281,7 @@ https://passport.xxx.com/api/vi/userInfo
   "message": "string"
 }
 ```
-### 3.其它说明  
+### 3.TODO  
 （无）
 
 
