@@ -36,7 +36,7 @@ passport-server.客户端只做集成使用，提供统一的filter(也可自行
 
 ### Passport项目部分功能展示
 
-* [登录授权页](http://www.baidu.com)  
+* [Demo](http://edwin.xin/passport)  
 
 ##  Passport集成配置说明
 > 系统提供两种集成方案:
