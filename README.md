@@ -39,16 +39,8 @@ passport-server.客户端只做集成使用，提供统一的filter(也可自行
 * [Demo](http://106.14.180.178//passport)  
 
 ##  Passport集成配置说明
-> 系统提供两种集成方案:
-
-##### 模式一 
-
-> 基于passport-client依赖包引入模式,该模式已提供统一的*HmtSessionFilter.java*拦截器，只需要引入依赖，
-然后在项目*web.xml*文件中配置filter节点即可.此模式代码侵入性小，但扩展性不是很友好. 具体配置如下:
-
 
 *  步骤1. 在项目pom.xml中引入Passport-client依赖包, 和Oauth2 client 依赖包
-
 
 ```xml
 <!--oauth2 client -->
@@ -109,45 +101,6 @@ passport.redirect.url=http://127.0.0.1:8080/app/index.html
       <param-name>ignoreUrlPattern</param-name>
       <param-value>/app/bower_components/**,/app/images/**</param-value>
     </init-param>
-  </filter>
-  <filter-mapping>
-    <filter-name>sessionFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
-```
-
-> *注意：此模式会将登录授权后的用户存储到Session里,对应的sessionKey : token_current_user)*
-
-
-##### 模式二 (推荐使用)
-> 自定义实现统一的Filter拦截器，该模式不需要引入依赖包，但需要自己实现SessionFilter，扩展性强 ,配置如下：
-
-* 步骤1. 将下面配置加入系统资源文件中
-
-```
-# 应用appKey
-passport.client.id=877645414466310
-# 应用appSecret
-passport.client.secret=7210878826c026946ffcd485b6170086cb935cc9
-# Passport访问服务地址
-passport.url=http://127.0.0.1:8081
-# 回调地址
-passport.redirect.url=http://127.0.0.1:8080/app/index.html
-```
-
-
-* 步骤2. 自定义实现SessionFilter
-
-    *代码可参照模式一 HmtSessionFilter* . 
-
-
-* 步骤3. 在项目的`web.xml`文件中新增一个自定义实现的SessionFilter拦截器.（配置可参考模式一步骤3）
-
-```xml
- <!-- Session Filter -->
-  <filter>
-    <filter-name>sessionFilter</filter-name>
-    <filter-class>com.hmt.oauth.passport.web.filter.xxx</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>sessionFilter</filter-name>
